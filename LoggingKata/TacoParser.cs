@@ -18,7 +18,7 @@
             if (cells.Length < 3)
             {
                 // Log that and return null
-                System.Console.WriteLine("Line did not parse");
+                logger.LogError(line);
                 // Do not fail if one record parsing fails, return null
                 return null; // TODO Implement
             }
