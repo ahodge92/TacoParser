@@ -20,8 +20,21 @@ namespace LoggingKata
             // use File.ReadAllLines(path) to grab all the lines from your csv file
             // Log and error if you get 0 lines and a warning if you get 1 line
             var lines = File.ReadAllLines(csvPath);
+            try
+            {
+                logger.LogInfo($"Lines: {lines[0]}");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("There are 0 lines in the CSV file", ex);
+                Environment.Exit(0);
+            }
 
-            logger.LogInfo($"Lines: {lines[0]}");
+            if (lines.Count()==1)
+            {
+                logger.LogWarning("There is only 1 line in the CSV file. Atleast 2 locations are needed.");
+                Environment.Exit(0);
+            }
 
             // Create a new instance of your TacoParser class
             var parser = new TacoParser();
@@ -35,9 +48,7 @@ namespace LoggingKata
 
             // TODO: Create two `ITrackable` variables with initial values of `null`. These will be used to store your two taco bells that are the farthest from each other.
             // Create a `double` variable to store the distance
-            ITrackable tacoA = null;
-            ITrackable tacoB = null;
-            var distance = 0.00;
+
 
             // Include the Geolocation toolbox, so you can compare locations: `using GeoCoordinatePortable;`
 
@@ -55,6 +66,10 @@ namespace LoggingKata
 
             // Once you've looped through everything, you've found the two Taco Bells farthest away from each other.
 
+            ITrackable tacoA = null;
+            ITrackable tacoB = null;
+            var distance = 0.00;
+
             for (int i = 0; i < locations.Length; i++)
             {
                 var locA = locations[i].Location;
@@ -71,13 +86,10 @@ namespace LoggingKata
                         distance = corA.GetDistanceTo(corB);
                         tacoA = locations[i];
                         tacoB = locations[j];
-
                     }
-
                 }
             }
 
-           
             Console.WriteLine($"{tacoA.Name} and {tacoB.Name} are the furthest apart");
         }
     }

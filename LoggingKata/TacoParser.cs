@@ -38,15 +38,16 @@
             var latitude = double.Parse(cells[0]);
             var longitude = double.Parse(cells[1]);
             var name = cells[2];
-
-            var tacoBell = new TacoBell();
-            tacoBell.Name = name;
             var point = new Point()
             {
                 Latitude = latitude,
                 Longitude = longitude,
             };
-            tacoBell.Location = point;
+            var tacoBell = new TacoBell()
+            {
+                Name = name,
+                Location = point,
+            };
 
             return tacoBell;
         }
